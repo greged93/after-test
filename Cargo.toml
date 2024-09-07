@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members = [
+  "crates/cleanup",
+  "crates/cleanup_test",
+]
+
+[workspace.dependencies]
+cleanup = { path = "crates/cleanup" }
