@@ -10,7 +10,7 @@ Simply provide the cleanup function you wish to call for each of your test a the
 shows an example to reset the state of a global variable used across the tests.
 
 ```rust
-use cleanup::cleanup;
+use after_test::cleanup;
 
 #[cfg(test)]
 #[cleanup(reset_global_state)]
@@ -41,7 +41,7 @@ mod tests {
 }
 ```
 
-The `reset_global_state` function will be called at the end of each function marked with the `#[test] attribute in the
+The `reset_global_state` function will be called at the end of each function marked with the `#[test]` attribute in the
 module.
 
 # Roadmap
