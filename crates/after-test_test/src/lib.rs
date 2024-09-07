@@ -1,4 +1,4 @@
-#[cleanup::cleanup(panic_with_message)]
+#[after_test::cleanup(panic_with_message)]
 #[cfg(test)]
 mod panics {
     fn panic_with_message() {
@@ -10,7 +10,7 @@ mod panics {
     fn test_should_panic() {}
 }
 
-#[cleanup::cleanup(clean_resources)]
+#[after_test::cleanup(clean_resources)]
 #[cfg(test)]
 mod resources {
     use std::sync::{Arc, LazyLock, Mutex};

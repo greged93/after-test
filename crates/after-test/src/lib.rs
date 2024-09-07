@@ -8,7 +8,7 @@
 //! # Example
 //!
 //! ```rust
-//! use cleanup::cleanup;
+//! use after_test::cleanup;
 //!
 //! #[cleanup(my_clean_up)]
 //! #[cfg(test)]

@@ -3,7 +3,7 @@
 version = 3
 
 [[package]]
-name = "cleanup"
+name = "after-test"
 version = "0.1.0"
 dependencies = [
  "proc-macro-error",
@@ -16,7 +16,7 @@ dependencies = [
 name = "cleanup_test"
 version = "0.1.0"
 dependencies = [
- "cleanup",
+ "after-test",
 ]
 
 [[package]]
