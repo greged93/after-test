@@ -6,6 +6,8 @@ at the end of each test, or if you need to reset some global state.
 
 # Examples
 
+## Call cleanup function
+
 Simply provide the cleanup function you wish to call for each of your test a the end of the execution. The below
 shows an example to reset the state of a global variable used across the tests.
 
@@ -43,6 +45,22 @@ mod tests {
 
 The `reset_global_state` function will be called at the end of each function marked with the `#[test]` attribute in the
 module.
+
+## Call closure as cleanup function
+
+You can also provide a closure if you wish to. Provide the closure as an argument to the macro.
+
+```rust
+use after_test::cleanup;
+
+#[cfg(test)]
+#[cleanup(|| {println ! ("this will be called at the end of each test")})]
+mod tests {
+    #[test]
+    fn my_test() {}
+}
+
+```
 
 # Roadmap
 
