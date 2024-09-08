@@ -2,7 +2,7 @@
 name = "after-test"
 version = "0.1.2"
 edition = "2021"
-description = "A procedural macro that allows you to run a clean up function before each test"
+description = "A procedural macro that allows you to run a clean up function after each test from a test module."
 license-file = "LICENSE"
 
 [lib]
