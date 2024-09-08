@@ -35,3 +35,13 @@ mod resources {
         assert_eq!(*zero, 2);
     }
 }
+
+#[after_test::cleanup(|| {
+    panic!("This is a panic message");
+})]
+#[cfg(test)]
+mod closure_tests {
+    #[test]
+    #[should_panic(expected = "This is a panic message")]
+    fn test_should_panic() {}
+}

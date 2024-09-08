@@ -1,6 +1,6 @@
 # Introduction
 
-This crate is a provides users with a simple macro that allows to define a cleanup function which can be
+This crate provides users with a simple macro that allows to define a cleanup function which can be
 applied to all tests in a module. This can be useful if you require to remove temporary files or directories
 at the end of each test, or if you need to reset some global state.
 
@@ -46,6 +46,7 @@ module.
 
 # Roadmap
 
-- [ ] Add support for async functions
+- [ ] Add support for async functions: this causes some issues because of the way `tokio::test` processes the tests and
+  doesn't return a function marked as `#[test]` or `#[tokio::test]`.
 - [ ] Add support for parametrized cleanup functions
-- [ ] Add support for closures
+- [x] Add support for closures

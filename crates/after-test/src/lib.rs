@@ -22,10 +22,12 @@
 //! }
 //! ```
 
+mod attribute;
+
+use crate::attribute::CleanupFunction;
 use proc_macro::TokenStream;
 use proc_macro_error::{emit_error, proc_macro_error};
 use quote::quote;
-use quote::spanned::Spanned;
 use syn::parse_macro_input;
 
 #[proc_macro_error]
@@ -37,10 +39,7 @@ pub fn cleanup(attr: TokenStream, item: TokenStream) -> TokenStream {
     assert_test_mod(&module);
 
     // Parse the cleanup function identifier
-    let attr = proc_macro2::TokenStream::from(attr);
-    let clean_fn = syn::parse2(attr.clone()).inspect_err(
-        |_| emit_error!(&attr, "expected clean up function identifier"; help = "provide a identifier to your clean up function"),
-    ).unwrap_or_else(|_| syn::Ident::new("default", attr.__span()));
+    let clean_fn = parse_macro_input!(attr as CleanupFunction);
 
     // Add the cleanup function call where needed
     let module = clean(module, clean_fn);
@@ -73,7 +72,7 @@ fn assert_test_mod(module: &syn::ItemMod) {
 
 /// Adds the cleanup function call on each function marked
 /// with `#[test]` attribute
-fn clean(mut module: syn::ItemMod, clean_fn: syn::Ident) -> syn::ItemMod {
+fn clean(mut module: syn::ItemMod, clean_fn: CleanupFunction) -> syn::ItemMod {
     let is_test = |f: &syn::ItemFn| f.attrs.iter().any(|attr| attr.path().is_ident("test"));
 
     module.content = module.content.map(|(brace, items)| {
