@@ -21,6 +21,17 @@
 //!     fn a_test() {}
 //! }
 //! ```
+//!
+//! ```rust
+//! use after_test::cleanup;
+//!
+//! #[cfg(test)]
+//! #[cleanup(|| {println ! ("this will be called at the end of each test")})]
+//! mod tests {
+//!     #[test]
+//!     fn my_test() {}
+//! }
+//! ```
 
 mod attribute;
 
