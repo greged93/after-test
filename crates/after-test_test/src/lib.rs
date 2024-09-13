@@ -45,3 +45,29 @@ mod closure_tests {
     #[should_panic(expected = "This is a panic message")]
     fn test_should_panic() {}
 }
+
+#[after_test::cleanup(clean_resources(0))]
+#[cfg(test)]
+mod parametrization_tests {
+    use std::sync::{Arc, LazyLock, Mutex};
+
+    static ZERO: LazyLock<Arc<Mutex<u32>>> = LazyLock::new(|| Arc::new(Mutex::new(0)));
+
+    fn clean_resources(value: u32) {
+        *ZERO.lock().unwrap() = value;
+    }
+
+    #[test]
+    fn test_increment() {
+        let mut zero = ZERO.lock().unwrap();
+        *zero += 1;
+        assert_eq!(*zero, 1);
+    }
+
+    #[test]
+    fn test_increment_double() {
+        let mut zero = ZERO.lock().unwrap();
+        *zero += 2;
+        assert_eq!(*zero, 2);
+    }
+}
