@@ -100,7 +100,7 @@ fn clean(mut module: syn::ItemMod, clean_fn: CleanupFunction) -> syn::ItemMod {
                             #(#attr)*
                             #vis #sig {
                                 #block
-                                #clean_fn();
+                                #clean_fn;
                             }
                         ))
                     }
