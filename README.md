@@ -44,7 +44,8 @@ mod tests {
 ```
 
 The `reset_global_state` function will be called at the end of each function marked with the `#[test]` attribute in the
-module.
+module. You can also provide arguments to your cleanup function, if it takes any arguments. Arguments can be literals (
+e.g. "hello" or 1), but also identifiers to variables that you have in your test (e.g. my_var).
 
 ## Call closure as cleanup function
 
@@ -59,12 +60,12 @@ mod tests {
     #[test]
     fn my_test() {}
 }
-
 ```
 
 # Roadmap
 
 - [ ] Add support for async functions: this causes some issues because of the way `tokio::test` processes the tests and
   doesn't return a function marked as `#[test]` or `#[tokio::test]`.
-- [ ] Add support for parametrized cleanup functions
+- [ ] Add support for disallowing the macro on certain tests.
+- [x] Add support for parametrized cleanup functions
 - [x] Add support for closures
