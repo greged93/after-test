@@ -2,8 +2,7 @@ use proc_macro2::{Ident, TokenStream};
 use proc_macro_error::emit_error;
 use quote::{quote, ToTokens};
 use syn::parse::{Parse, ParseStream};
-use syn::token::Paren;
-use syn::{parenthesized, ExprCall, ExprClosure, ExprLit};
+use syn::{ExprCall, ExprClosure};
 
 /// The cleanup function that will be called at the end of each test.
 #[derive(Clone)]
@@ -33,28 +32,15 @@ impl CleanupFunction {
 
 impl Parse for CleanupFunction {
     fn parse(input: ParseStream) -> syn::Result<Self> {
+        // Check if the input stream is an expr call
+        if input.fork().parse::<ExprCall>().is_ok() {
+            return Ok(CleanupFunction::with_call_args(input.parse::<ExprCall>()?));
+        }
+
         // Check if the input stream is an identifier
         let ident = input.parse::<Ident>();
         if ident.is_ok() && input.is_empty() {
             return Ok(CleanupFunction::with_call(ident?));
-        }
-
-        // Check if the next token is a Token![(]
-        if input.peek(Paren) {
-            // If it is, parse the stream as (#(#ident),*)
-            let content;
-            parenthesized!(content in input);
-            let args =
-                syn::punctuated::Punctuated::<ExprLit, syn::Token![,]>::parse_terminated(&content)?
-                    .into_iter();
-
-            let ident = ident.unwrap();
-
-            let call = quote!(#ident(#(#args),*));
-
-            // Reconstruct the [`ExprCall`]
-            let expr_call = syn::parse2::<ExprCall>(call)?;
-            return Ok(CleanupFunction::with_call_args(expr_call));
         }
 
         // Check if the token is a closure
