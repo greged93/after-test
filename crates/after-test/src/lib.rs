@@ -1,4 +1,4 @@
-//! The [`cleanup`] macro iterates over all functions marked as tests
+//! The `#[cleanup]` macro iterates over all functions marked as tests
 //! in the input token stream and adds a call to the provided function
 //! passed as an attribute to the macro.
 //!
@@ -6,6 +6,9 @@
 //! that the passed cleanup function is called at each test function's end.
 //!
 //! # Example
+//!
+//! Use the macro to call a function that is defined in your tests module after
+//! every test.
 //!
 //! ```rust
 //! use after_test::cleanup;
@@ -21,6 +24,26 @@
 //!     fn a_test() {}
 //! }
 //! ```
+//!
+//! The macro can also take an input to your function:
+//!
+//! ```rust
+//! use after_test::cleanup;
+//!
+//! #[cleanup(my_clean_up(0))]
+//! #[cfg(test)]
+//! mod tests {
+//!     fn my_clean_up(input: u32) {
+//!        println!("cleaning up resources with {input}");
+//!     }   
+//!
+//!     #[test]
+//!     fn a_test() {}
+//! }
+//! ```
+//!
+//! Use the macro to call a closure after each of your tests defined in the
+//! tests module you are annotating.
 //!
 //! ```rust
 //! use after_test::cleanup;
